@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoutesService } from '../../services/routes.service';
 import { ValidatorsService } from '../../services/validators.service';
+import { Route } from '../../interfaces/route.interface';
 
 @Component({
   selector: 'finder-finder-page',
   templateUrl: './finder-page.component.html'
 })
 export class FinderPageComponent implements OnInit {
+
+  public selectedRoute?: Route;
 
   public myForm: FormGroup = this.fb.group({
     entryPoint: ['', [Validators.required]],
@@ -66,7 +69,10 @@ export class FinderPageComponent implements OnInit {
       return;
     }
 
-    this.routesService.findRoute(this.entryPoint, this.exitPoint);
+    const resp = this.routesService.findRoute(this.entryPoint, this.exitPoint);
+    if(!resp) return; //TODO agreagar error
+
+    this.selectedRoute = resp;
   }
 
 }

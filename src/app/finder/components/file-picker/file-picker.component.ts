@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Route } from '../../interfaces/route.interface';
+import { Fix } from '../../interfaces/fix.interface';
 import { RoutesService } from '../../services/routes.service';
 
 @Component({
@@ -9,9 +9,9 @@ import { RoutesService } from '../../services/routes.service';
 export class FilePickerComponent {
 
   @Output()
-  routesEmiter = new EventEmitter<Route[]>();
+  routesEmiter = new EventEmitter<Fix[]>();
 
-  public routes: Route[] = [];
+  public routes: Fix[] = [];
 
   constructor(
     private csvService: RoutesService

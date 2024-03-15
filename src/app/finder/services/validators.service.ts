@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Route } from '../interfaces/route.interface';
+import { Fix } from '../interfaces/fix.interface';
 import { FormControl, ValidationErrors } from '@angular/forms';
 
 @Injectable({providedIn: 'root'})

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Route } from '../interfaces/route.interface';
+import { Fix } from '../interfaces/fix.interface';
+import { Direction, Route } from '../interfaces/route.interface';
 
 @Injectable({providedIn: 'root'})
 export class RoutesService {
 
-  private _routes: Route[] = [];
+  private _routes: Fix[] = [];
 
   constructor() { }
 
-  get routes (): Route[] {
+  get routes (): Fix[] {
     return [...this._routes]
   }
 
@@ -16,18 +17,18 @@ export class RoutesService {
 
     const lines = csvText.split('\n');
     const headers = lines[0].split(';');
-    const routes: Route[] = [];
+    const routes: Fix[] = [];
 
 
     for(let i = 1; i < lines.length; i++) {
-      let obj: Partial<Route> = {};
+      let obj: Partial<Fix> = {};
       const currentLine = lines[i].split(';');
 
       headers.forEach((header, index) => {
-        obj[header as keyof Route] = currentLine[index];
+        obj[header as keyof Fix] = currentLine[index];
       });
 
-      routes.push(obj as Route);
+      routes.push(obj as Fix);
     }
 
     this._routes = routes;
@@ -47,19 +48,19 @@ export class RoutesService {
     this._routes = JSON.parse(routes);
   }
 
-  public findRoute(entryPoint: string, exitPoint: string) {
+  public findRoute(entryPoint: string, exitPoint: string): Route | null {
 
     const entryItems = this.routes.filter(route => route.PUNTO_INICIO === entryPoint);
     const exitItems = this.routes.filter(route => route.PUNTO_FINAL === exitPoint);
 
-    let entry: Route;
-    let exit: Route;
+    let entry: Partial<Fix> = {};
+    let exit: Partial<Fix> = {};
 
-    entryItems.find(entryItem => {
+    entryItems.find((entryItem) => {
 
-      const match = exitItems.find(exitItem => {
+      const match = exitItems.find((exitItem) => {
         if(entryItem.DESIGNATOR_TXT === exitItem.DESIGNATOR_TXT) {
-          exit = exitItem;
+          exit = exitItem as Fix;
           return true;
         }
 
@@ -67,16 +68,34 @@ export class RoutesService {
       });
 
       if(match) {
-        entry = entryItem;
+        entry = entryItem as Fix;
         return true;
       }
       return false;
     });
 
-    console.log(entryItems)
-    console.log(exitItems)
-    console.log(entry!)
-    console.log(exit!)
+    if(Object.keys(entry).length == 0 || Object.keys(exit).length == 0) return null;
+
+    const entryIndex = this.routes.indexOf(entry as Fix);
+    const exitIndex = this.routes.indexOf(exit as Fix);
+
+    if(entryIndex < 0 || exitIndex < 0) return null;
+
+    if(entryIndex < exitIndex) {
+      const fixes = this.routes.slice(entryIndex, exitIndex);
+      return {
+        path: fixes,
+        direction: Direction.FORWARD,
+        isEven: fixes[0].DIRECTION_CODE_PAR_EVEN === Direction.FORWARD
+      }
+    }
+
+    const fixes = this.routes.slice(exitIndex, entryIndex);
+    return {
+      path: fixes,
+      direction: Direction.BACKWARD,
+      isEven: fixes[0].DIRECTION_CODE_PAR_EVEN === Direction.BACKWARD
+    }
   }
 
 }
