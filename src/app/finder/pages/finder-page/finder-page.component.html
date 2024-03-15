@@ -1,0 +1,86 @@
+<mat-card>
+  <mat-card-content>
+    <form class="grid p-3" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+      <mat-form-field class="md:col-6 sm:col-12">
+        <mat-label>Punto de entrada</mat-label>
+        <input
+          matInput
+          type="text"
+          required
+          formControlName="entryPoint"
+          [matAutocomplete]="entryAuto"
+          (input)="searchEntryPoint()"
+        />
+
+        <mat-autocomplete
+          autoActiveFirstOption
+          #entryAuto="matAutocomplete"
+          (optionSelected)="onSelectedEntry($event)"
+        >
+          <mat-option *ngFor="let suggestion of selectedEntrySuggestions" [value]="suggestion">
+            {{ suggestion }}
+          </mat-option>
+        </mat-autocomplete>
+
+        <mat-error>{{ getFieldError('entryPoint') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="md:col-6 sm:col-12">
+        <mat-label>Punto de salida</mat-label>
+        <input
+          matInput
+          type="text"
+          required
+          formControlName="exitPoint"
+          [matAutocomplete]="exitAuto"
+          (input)="searchExitPoint()"
+        />
+
+        <mat-autocomplete
+          autoActiveFirstOption
+          #exitAuto="matAutocomplete"
+          (optionSelected)="onSelectedExit($event)"
+        >
+          <mat-option *ngFor="let suggestion of selectedExitSuggestions" [value]="suggestion">
+            {{ suggestion }}
+          </mat-option>
+        </mat-autocomplete>
+
+        <mat-error>{{ getFieldError('entryPoint') }}</mat-error>
+      </mat-form-field>
+
+    </form>
+
+    <div class="flex justify-content-evenly col-12">
+
+      <button
+        mat-flat-button
+        color="warn"
+        (click)="onResetForm()"
+      >
+        Borrar
+      </button>
+
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="onSubmit()"
+      >
+        Buscar
+      </button>
+
+    </div>
+
+    <div class="flex justify-content-center col-12 mt-100">
+      <finder-file-picker></finder-file-picker>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <finder-data-display [route]="selectedRoute" ></finder-data-display>
+  </mat-card-content>
+</mat-card>
