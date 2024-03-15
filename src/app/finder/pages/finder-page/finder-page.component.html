@@ -1,0 +1,57 @@
+<p>finder-page works!</p>
+
+<mat-card>
+  <mat-card-content>
+    <form class="grid p-3" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+      <mat-form-field class="md:col-6 sm:col-12">
+        <mat-label>Punto de entrada</mat-label>
+        <input
+          matInput
+          type="text"
+          required
+          formControlName="entryPoint"
+        />
+        <mat-error>{{ getFieldError('entryPoint') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="md:col-6 sm:col-12">
+        <mat-label>Punto de salida</mat-label>
+        <input
+          matInput
+          type="text"
+          required
+          formControlName="exitPoint"
+        />
+        <mat-error>{{ getFieldError('entryPoint') }}</mat-error>
+      </mat-form-field>
+
+    </form>
+
+    <div class="flex justify-content-evenly col-12">
+
+      <button
+        mat-flat-button
+        color="warn"
+        (click)="onResetForm()"
+      >
+        Borrar
+      </button>
+
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="onSubmit()"
+      >
+        Buscar
+      </button>
+
+    </div>
+
+    <div class="flex justify-content-center col-12 mt-100">
+      <finder-file-picker></finder-file-picker>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
