@@ -1,4 +1,32 @@
 <div *ngIf="route">
-  {{ route.path[0].DESIGNATOR_TXT }}
-  {{ route.isEven? 'Par' : 'Impar' }}
+
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="airwayName">
+      <mat-header-cell *matHeaderCellDef>airwayName</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.airwayName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="entryFixName">
+      <mat-header-cell *matHeaderCellDef>entryFixName</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.entryFixName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="exitFixName">
+      <mat-header-cell *matHeaderCellDef>exitFixName</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.exitFixName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="flightLevel">
+      <mat-header-cell *matHeaderCellDef>flightLevel</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.flightLevel }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="evenOrOdd">
+      <mat-header-cell *matHeaderCellDef>evenOrOdd</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.evenOrOdd }}</mat-cell>
+    </ng-container>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+
 </div>

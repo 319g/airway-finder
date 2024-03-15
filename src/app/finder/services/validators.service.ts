@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Fix } from '../interfaces/fix.interface';
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { ValidationErrors } from '@angular/forms';
 
 @Injectable({providedIn: 'root'})
 export class ValidatorsService {
 
   constructor() { }
 
-  public routesAreLoaded(control: FormControl): ValidationErrors | null {
+  public routesAreLoaded(): ValidationErrors | null {
 
-    const routes = control.value;
-    console.log(routes)
+    const routes = localStorage.getItem('routes');
 
-    if(!routes || routes.length <= 0) return {
+    if(!routes) return {
       routesNotLoaded: true
     };
 

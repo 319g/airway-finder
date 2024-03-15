@@ -9,7 +9,20 @@
           type="text"
           required
           formControlName="entryPoint"
+          [matAutocomplete]="entryAuto"
+          (input)="searchEntryPoint()"
         />
+
+        <mat-autocomplete
+          autoActiveFirstOption
+          #entryAuto="matAutocomplete"
+          (optionSelected)="onSelectedEntry($event)"
+        >
+          <mat-option *ngFor="let suggestion of selectedEntrySuggestions" [value]="suggestion">
+            {{ suggestion }}
+          </mat-option>
+        </mat-autocomplete>
+
         <mat-error>{{ getFieldError('entryPoint') }}</mat-error>
       </mat-form-field>
 
@@ -20,7 +33,20 @@
           type="text"
           required
           formControlName="exitPoint"
+          [matAutocomplete]="exitAuto"
+          (input)="searchExitPoint()"
         />
+
+        <mat-autocomplete
+          autoActiveFirstOption
+          #exitAuto="matAutocomplete"
+          (optionSelected)="onSelectedExit($event)"
+        >
+          <mat-option *ngFor="let suggestion of selectedExitSuggestions" [value]="suggestion">
+            {{ suggestion }}
+          </mat-option>
+        </mat-autocomplete>
+
         <mat-error>{{ getFieldError('entryPoint') }}</mat-error>
       </mat-form-field>
 
